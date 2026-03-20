@@ -1,19 +1,20 @@
-import { useState, useSyncExternalStore } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { QUESTIONS, DISCUSSION_STEPS, getAssignments, subscribe } from "@/lib/curriculum-store";
+import { QUESTIONS, DISCUSSION_STEPS, subscribeToAssignments } from "@/lib/curriculum-store";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ChevronDown } from "lucide-react";
-
-function useAssignments() {
-  return useSyncExternalStore(subscribe, getAssignments);
-}
 
 export default function StudentView() {
   const [tableNumber, setTableNumber] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [activeStep, setActiveStep] = useState<number | null>(null);
-  const assignments = useAssignments();
+  const [assignments, setAssignments] = useState<Record<number, number>>({});
+
+  useEffect(() => {
+    const unsubscribe = subscribeToAssignments(setAssignments);
+    return unsubscribe;
+  }, []);
 
   const questionId = tableNumber ? assignments[tableNumber] : undefined;
   const question = questionId ? QUESTIONS.find((q) => q.id === questionId) : undefined;

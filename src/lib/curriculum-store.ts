@@ -1,3 +1,5 @@
+import { supabase } from "@/integrations/supabase/client";
+
 export interface CurriculumQuestion {
   id: number;
   title: string;
@@ -23,44 +25,66 @@ export const DISCUSSION_STEPS = [
   { title: "Agree on Justification", description: "You don't need to agree on the answer — agree on the strongest reasoning. Prepare to present your table's best argument." },
 ];
 
-// Persist & sync across tabs/devices via localStorage
-const STORAGE_KEY = "curriculum-lab-assignments";
+const SESSION_ID = "default";
 
-type Listener = () => void;
-const listeners: Set<Listener> = new Set();
+// Push assignments to the database
+export async function pushAssignments(assignments: Record<number, number>) {
+  // Delete existing then upsert
+  const rows = Object.entries(assignments).map(([tableNumber, questionId]) => ({
+    session_id: SESSION_ID,
+    table_number: Number(tableNumber),
+    question_id: questionId,
+  }));
 
-function loadFromStorage(): Record<number, number> {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
+  await supabase
+    .from("table_assignments")
+    .delete()
+    .eq("session_id", SESSION_ID);
+
+  if (rows.length > 0) {
+    await supabase.from("table_assignments").insert(rows);
   }
 }
 
-let snapshot: Record<number, number> = loadFromStorage();
+// Fetch current assignments from the database
+export async function fetchAssignments(): Promise<Record<number, number>> {
+  const { data } = await supabase
+    .from("table_assignments")
+    .select("table_number, question_id")
+    .eq("session_id", SESSION_ID);
 
-export function getAssignments() {
-  return snapshot;
-}
-
-export function setAssignments(assignments: Record<number, number>) {
-  snapshot = { ...assignments };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
-  listeners.forEach((l) => l());
-}
-
-// Listen for changes from other tabs/windows
-if (typeof window !== "undefined") {
-  window.addEventListener("storage", (e) => {
-    if (e.key === STORAGE_KEY) {
-      snapshot = loadFromStorage();
-      listeners.forEach((l) => l());
-    }
+  const result: Record<number, number> = {};
+  data?.forEach((row) => {
+    result[row.table_number] = row.question_id;
   });
+  return result;
 }
 
-export function subscribe(listener: Listener) {
-  listeners.add(listener);
-  return () => listeners.delete(listener);
+// Subscribe to real-time changes
+export function subscribeToAssignments(
+  onChange: (assignments: Record<number, number>) => void
+) {
+  // Fetch initial
+  fetchAssignments().then(onChange);
+
+  const channel = supabase
+    .channel("table_assignments_changes")
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "table_assignments",
+        filter: `session_id=eq.${SESSION_ID}`,
+      },
+      () => {
+        // Re-fetch all on any change
+        fetchAssignments().then(onChange);
+      }
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
 }

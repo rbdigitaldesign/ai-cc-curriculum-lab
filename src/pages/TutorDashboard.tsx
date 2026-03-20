@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { QUESTIONS, setAssignments } from "@/lib/curriculum-store";
+import { QUESTIONS, pushAssignments } from "@/lib/curriculum-store";
 import { Shuffle, Send, Copy, ExternalLink, Download } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
@@ -33,7 +33,7 @@ export default function TutorDashboard() {
       toast.error("Please assign a question to every table first.");
       return;
     }
-    setAssignments(assignments);
+    pushAssignments(assignments);
     toast.success("Questions pushed to all tables!");
   };
 
@@ -43,7 +43,7 @@ export default function TutorDashboard() {
       newAssignments[i] = QUESTIONS[Math.floor(Math.random() * QUESTIONS.length)].id;
     }
     setLocal(newAssignments);
-    setAssignments(newAssignments);
+    pushAssignments(newAssignments);
     toast.success("Questions randomised and pushed!");
   };
 
