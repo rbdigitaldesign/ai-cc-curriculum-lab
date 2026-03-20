@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { QUESTIONS, setAssignments } from "@/lib/curriculum-store";
-import { Shuffle, Send } from "lucide-react";
+import { Shuffle, Send, QrCode } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { QRCodeSVG } from "qrcode.react";
 
 export default function TutorDashboard() {
   const [tableCount, setTableCount] = useState(6);
