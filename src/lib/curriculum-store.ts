@@ -23,21 +23,41 @@ export const DISCUSSION_STEPS = [
   { title: "Agree on Justification", description: "You don't need to agree on the answer — agree on the strongest reasoning. Prepare to present your table's best argument." },
 ];
 
-// Simple pub/sub to simulate push from tutor to student
+// Persist & sync across tabs/devices via localStorage
+const STORAGE_KEY = "curriculum-lab-assignments";
+
 type Listener = () => void;
 const listeners: Set<Listener> = new Set();
 
-let tableAssignments: Record<number, number> = {}; // tableNumber -> questionId
-let snapshot = tableAssignments;
+function loadFromStorage(): Record<number, number> {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+let snapshot: Record<number, number> = loadFromStorage();
 
 export function getAssignments() {
   return snapshot;
 }
 
 export function setAssignments(assignments: Record<number, number>) {
-  tableAssignments = { ...assignments };
-  snapshot = tableAssignments;
+  snapshot = { ...assignments };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
   listeners.forEach((l) => l());
+}
+
+// Listen for changes from other tabs/windows
+if (typeof window !== "undefined") {
+  window.addEventListener("storage", (e) => {
+    if (e.key === STORAGE_KEY) {
+      snapshot = loadFromStorage();
+      listeners.forEach((l) => l());
+    }
+  });
 }
 
 export function subscribe(listener: Listener) {
