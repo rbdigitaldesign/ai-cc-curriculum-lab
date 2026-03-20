@@ -91,7 +91,7 @@ export default function TutorDashboard() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => window.open(studentUrl, "_blank")}
+                  onClick={() => window.open(`${window.location.origin}/join`, "_blank")}
                 >
                   <ExternalLink className="mr-1.5 h-3.5 w-3.5" /> Open in New Tab
                 </Button>

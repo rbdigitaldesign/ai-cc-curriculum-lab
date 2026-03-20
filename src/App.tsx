@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import TutorDashboard from "./pages/TutorDashboard";
 import StudentView from "./pages/StudentView";
+import StudentQRPage from "./pages/StudentQRPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -18,6 +19,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<TutorDashboard />} />
           <Route path="/student" element={<StudentView />} />
+          <Route path="/join" element={<StudentQRPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
