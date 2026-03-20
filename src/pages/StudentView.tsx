@@ -1,9 +1,9 @@
-import { useState, useEffect, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { QUESTIONS, DISCUSSION_STEPS, getAssignments, subscribe } from "@/lib/curriculum-store";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown } from "lucide-react";
 
 function useAssignments() {
   return useSyncExternalStore(subscribe, getAssignments);
