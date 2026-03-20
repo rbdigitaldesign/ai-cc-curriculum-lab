@@ -4,82 +4,84 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 220 25% 10%;
+    /* AU White / Light theme */
+    --background: 40 33% 96%; /* South East Limestone #F8EFE0 area */
+    --foreground: 245 68% 19%; /* Dark Blue #140F50 */
 
     --card: 0 0% 100%;
-    --card-foreground: 220 25% 10%;
+    --card-foreground: 245 68% 19%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 10%;
+    --popover-foreground: 245 68% 19%;
 
-    --primary: 220 70% 45%;
+    --primary: 245 68% 19%; /* Dark Blue #140F50 */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 93%;
-    --secondary-foreground: 220 25% 10%;
+    --secondary: 40 33% 92%; /* Limestone lighter */
+    --secondary-foreground: 245 68% 19%;
 
-    --muted: 220 15% 95%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 40 20% 94%;
+    --muted-foreground: 245 30% 40%;
 
-    --accent: 220 15% 93%;
-    --accent-foreground: 220 25% 10%;
+    --accent: 252 100% 71%; /* North Terrace Purple #836BFF */
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 88%;
-    --input: 220 13% 88%;
-    --ring: 220 70% 45%;
+    --border: 40 15% 85%;
+    --input: 40 15% 85%;
+    --ring: 228 100% 54%; /* Bright Blue #1448FF */
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 245 68% 19%;
+    --sidebar-primary: 245 68% 19%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 40 33% 96%;
+    --sidebar-accent-foreground: 245 68% 19%;
+    --sidebar-border: 40 15% 88%;
+    --sidebar-ring: 228 100% 54%;
   }
 
   .dark {
-    --background: 220 25% 6%;
-    --foreground: 210 20% 95%;
+    --background: 245 68% 12%;
+    --foreground: 40 33% 96%;
 
-    --card: 220 25% 9%;
-    --card-foreground: 210 20% 95%;
+    --card: 245 60% 15%;
+    --card-foreground: 40 33% 96%;
 
-    --popover: 220 25% 9%;
-    --popover-foreground: 210 20% 95%;
+    --popover: 245 60% 15%;
+    --popover-foreground: 40 33% 96%;
 
-    --primary: 220 70% 55%;
+    --primary: 252 100% 71%; /* North Terrace Purple */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 20% 16%;
-    --secondary-foreground: 210 20% 95%;
+    --secondary: 245 50% 22%;
+    --secondary-foreground: 40 33% 96%;
 
-    --muted: 220 20% 16%;
-    --muted-foreground: 220 10% 55%;
+    --muted: 245 50% 22%;
+    --muted-foreground: 252 60% 70%;
 
-    --accent: 220 20% 16%;
-    --accent-foreground: 210 20% 95%;
+    --accent: 228 100% 54%; /* Bright Blue */
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 20% 18%;
-    --input: 220 20% 18%;
-    --ring: 220 70% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --border: 245 40% 20%;
+    --input: 245 40% 20%;
+    --ring: 252 100% 71%;
+
+    --sidebar-background: 245 68% 10%;
+    --sidebar-foreground: 40 33% 96%;
+    --sidebar-primary: 252 100% 71%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 245 50% 18%;
+    --sidebar-accent-foreground: 40 33% 96%;
+    --sidebar-border: 245 40% 18%;
+    --sidebar-ring: 228 100% 54%;
   }
 }
 
