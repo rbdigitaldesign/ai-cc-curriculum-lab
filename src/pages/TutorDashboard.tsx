@@ -33,7 +33,7 @@ export default function TutorDashboard() {
       toast.error("Please assign a question to every table first.");
       return;
     }
-    setAssignments(assignments);
+    pushAssignments(assignments);
     toast.success("Questions pushed to all tables!");
   };
 
