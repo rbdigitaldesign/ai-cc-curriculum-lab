@@ -1,9 +1,9 @@
-import { useState, useEffect, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { QUESTIONS, DISCUSSION_STEPS, getAssignments, subscribe } from "@/lib/curriculum-store";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown } from "lucide-react";
 
 function useAssignments() {
   return useSyncExternalStore(subscribe, getAssignments);
@@ -12,6 +12,7 @@ function useAssignments() {
 export default function StudentView() {
   const [tableNumber, setTableNumber] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
+  const [activeStep, setActiveStep] = useState<number | null>(null);
   const assignments = useAssignments();
 
   const questionId = tableNumber ? assignments[tableNumber] : undefined;
@@ -86,21 +87,44 @@ export default function StudentView() {
       </main>
 
       {/* Discussion Framework footer */}
-      <footer className="border-t border-border bg-muted px-4 py-4">
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 text-center">
+      <footer className="border-t border-border bg-muted px-4 py-5">
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1 text-center">
           Discussion Framework
         </p>
+        <p className="text-xs text-muted-foreground text-center mb-4 max-w-md mx-auto">
+          Follow these four steps to structure your table's conversation. Tap a step to see guidance.
+        </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-2xl mx-auto">
-          {DISCUSSION_STEPS.map((step, i) => (
-            <div
-              key={i}
-              className="rounded-md bg-card border border-border px-3 py-2 text-center"
-            >
-              <span className="block text-xs font-bold text-primary">{i + 1}</span>
-              <span className="text-xs text-foreground font-medium">{step}</span>
-            </div>
-          ))}
+          {DISCUSSION_STEPS.map((step, i) => {
+            const isActive = activeStep === i;
+            return (
+              <button
+                key={i}
+                onClick={() => setActiveStep(isActive ? null : i)}
+                className={`rounded-lg border px-3 py-3 text-center transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? "bg-primary border-primary text-primary-foreground shadow-md scale-[1.02]"
+                    : "bg-card border-border hover:border-primary/40 hover:shadow-sm"
+                }`}
+              >
+                <span className={`block text-sm font-bold mb-0.5 ${isActive ? "text-primary-foreground" : "text-primary"}`}>
+                  Step {i + 1}
+                </span>
+                <span className={`text-xs font-medium ${isActive ? "text-primary-foreground/90" : "text-foreground"}`}>
+                  {step.title}
+                </span>
+                <ChevronDown className={`h-3 w-3 mx-auto mt-1 transition-transform ${isActive ? "rotate-180 text-primary-foreground/70" : "text-muted-foreground"}`} />
+              </button>
+            );
+          })}
         </div>
+        {activeStep !== null && (
+          <div className="mt-3 max-w-2xl mx-auto rounded-lg bg-card border border-border p-4 text-center animate-in fade-in slide-in-from-top-2 duration-200">
+            <p className="text-sm text-foreground leading-relaxed">
+              {DISCUSSION_STEPS[activeStep].description}
+            </p>
+          </div>
+        )}
       </footer>
     </div>
   );
