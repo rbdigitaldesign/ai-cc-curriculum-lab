@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { QUESTIONS, setAssignments } from "@/lib/curriculum-store";
-import { Shuffle, Send, QrCode } from "lucide-react";
+import { Shuffle, Send, Copy, ExternalLink, Download } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
@@ -68,12 +68,61 @@ export default function TutorDashboard() {
 
       <main className="mx-auto max-w-3xl px-4 py-8 sm:px-8 space-y-8">
         {/* Student access */}
-        <div className="rounded-lg border border-border bg-card p-5 flex flex-col sm:flex-row items-center gap-5">
-          <QRCodeSVG value={studentUrl} size={120} className="shrink-0" />
-          <div className="space-y-1 text-center sm:text-left">
-            <p className="text-sm font-semibold text-foreground">Student Access Link</p>
-            <p className="text-xs text-muted-foreground">Share this URL or display the QR code for students to join:</p>
-            <code className="block text-sm bg-muted px-3 py-1.5 rounded-md text-foreground break-all select-all">{studentUrl}</code>
+        <div className="rounded-lg border border-border bg-card p-5 space-y-4">
+          <div className="flex flex-col sm:flex-row items-center gap-5">
+            <div className="shrink-0 bg-white p-2 rounded-lg">
+              <QRCodeSVG id="qr-code" value={studentUrl} size={140} />
+            </div>
+            <div className="space-y-2 text-center sm:text-left flex-1">
+              <p className="text-sm font-semibold text-foreground">Student Access Link</p>
+              <p className="text-xs text-muted-foreground">Share this URL, display the QR code, or download it for your slides.</p>
+              <code className="block text-sm bg-muted px-3 py-1.5 rounded-md text-foreground break-all select-all">{studentUrl}</code>
+              <div className="flex flex-wrap gap-2 pt-1 justify-center sm:justify-start">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    navigator.clipboard.writeText(studentUrl);
+                    toast.success("Link copied to clipboard!");
+                  }}
+                >
+                  <Copy className="mr-1.5 h-3.5 w-3.5" /> Copy Link
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open(studentUrl, "_blank")}
+                >
+                  <ExternalLink className="mr-1.5 h-3.5 w-3.5" /> Open in New Tab
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const svg = document.getElementById("qr-code");
+                    if (!svg) return;
+                    const svgData = new XMLSerializer().serializeToString(svg);
+                    const canvas = document.createElement("canvas");
+                    canvas.width = 600;
+                    canvas.height = 600;
+                    const ctx = canvas.getContext("2d");
+                    const img = new Image();
+                    img.onload = () => {
+                      ctx!.fillStyle = "white";
+                      ctx!.fillRect(0, 0, 600, 600);
+                      ctx!.drawImage(img, 0, 0, 600, 600);
+                      const a = document.createElement("a");
+                      a.download = "curriculum-lab-qr.png";
+                      a.href = canvas.toDataURL("image/png");
+                      a.click();
+                    };
+                    img.src = "data:image/svg+xml;base64," + btoa(svgData);
+                  }}
+                >
+                  <Download className="mr-1.5 h-3.5 w-3.5" /> Download QR
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
 
