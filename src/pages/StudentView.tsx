@@ -12,6 +12,7 @@ function useAssignments() {
 export default function StudentView() {
   const [tableNumber, setTableNumber] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
+  const [activeStep, setActiveStep] = useState<number | null>(null);
   const assignments = useAssignments();
 
   const questionId = tableNumber ? assignments[tableNumber] : undefined;
