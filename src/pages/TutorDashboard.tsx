@@ -43,7 +43,7 @@ export default function TutorDashboard() {
       newAssignments[i] = QUESTIONS[Math.floor(Math.random() * QUESTIONS.length)].id;
     }
     setLocal(newAssignments);
-    setAssignments(newAssignments);
+    pushAssignments(newAssignments);
     toast.success("Questions randomised and pushed!");
   };
 
