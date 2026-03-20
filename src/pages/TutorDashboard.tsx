@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { QUESTIONS, setAssignments } from "@/lib/curriculum-store";
+import { QUESTIONS, pushAssignments } from "@/lib/curriculum-store";
 import { Shuffle, Send, Copy, ExternalLink, Download } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
