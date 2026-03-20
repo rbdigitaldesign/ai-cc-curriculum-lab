@@ -5,6 +5,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { QUESTIONS, DISCUSSION_STEPS, subscribeToAssignments } from "@/lib/curriculum-store";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ChevronDown, AlertTriangle } from "lucide-react";
+import auLogo from "@/assets/au-logo-horizontal.png";
 
 export default function StudentView() {
   const [tableNumber, setTableNumber] = useState<number | null>(null);
