@@ -7,6 +7,21 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, ChevronDown, AlertTriangle } from "lucide-react";
 import auLogo from "@/assets/au-logo-horizontal.png";
 
+import bgQ1 from "@/assets/bg-q1.jpg";
+import bgQ2 from "@/assets/bg-q2.jpg";
+import bgQ3 from "@/assets/bg-q3.jpg";
+import bgQ4 from "@/assets/bg-q4.jpg";
+import bgQ5 from "@/assets/bg-q5.jpg";
+import bgQ6 from "@/assets/bg-q6.jpg";
+import bgQ7 from "@/assets/bg-q7.jpg";
+import bgQ8 from "@/assets/bg-q8.jpg";
+import bgQ9 from "@/assets/bg-q9.jpg";
+
+const QUESTION_BACKGROUNDS: Record<number, string> = {
+  1: bgQ1, 2: bgQ2, 3: bgQ3, 4: bgQ4, 5: bgQ5,
+  6: bgQ6, 7: bgQ7, 8: bgQ8, 9: bgQ9,
+};
+
 export default function StudentView() {
   const [tableNumber, setTableNumber] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
