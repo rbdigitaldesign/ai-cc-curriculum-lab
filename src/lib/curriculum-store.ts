@@ -7,15 +7,15 @@ export interface CurriculumQuestion {
 }
 
 export const QUESTIONS: CurriculumQuestion[] = [
-  { id: 1, title: "Subject Relevance", text: "Are any aspects of your specific subject becoming less useful because of AI?" },
-  { id: 2, title: "Literacy & Writing", text: "Should the English writing and reading curriculum change now that AI is here?" },
-  { id: 3, title: "Intercultural Skills", text: "Should language learning focus more on intercultural skills than pure linguistics?" },
-  { id: 4, title: "Creative Arts & Music", text: "How might the presence of AI affect what is taught in visual arts or music?" },
-  { id: 5, title: "AI-Free Learning", text: "Are there subjects or tasks where students should deliberately learn without AI?" },
-  { id: 6, title: "Verification vs. Memory", text: "Should we spend less time on memorisation and more on verifying info?" },
-  { id: 7, title: "Employer Expectations", text: "Would employers prefer graduates from an AI-encouraged or AI-banned university?" },
-  { id: 8, title: "CS Evolution", text: "How might AI fundamentally change the computer science curriculum?" },
-  { id: 9, title: "Assessment of AI Use", text: "If AI use is encouraged, should students be marked on their \"AI Prompting\" skills?" },
+  { id: 1, title: "Subject Relevance", text: "Consider the degree you are studying: are any aspects of the content that is taught in your subject going to become less useful because of AI?" },
+  { id: 2, title: "Literacy & Writing", text: "Should the English writing and reading curriculum change now that AI is here? In what ways?" },
+  { id: 3, title: "Intercultural Skills", text: "Should language learning be more focused on intercultural skills rather than linguistics? What are the reasons for your answers?" },
+  { id: 4, title: "Creative Arts & Music", text: "How might the presence of AI affect what is taught in visual arts curricula? Or music courses? What are the reasons for your answers?" },
+  { id: 5, title: "AI-Free Learning", text: "Are there any subjects or parts of the curriculum where students should deliberately learn without AI? Why or why not?" },
+  { id: 6, title: "Verification vs. Memory", text: "Should schools and universities spend less time teaching students to memorise information, and more time teaching them to verify information? Why or why not?" },
+  { id: 7, title: "Employer Expectations", text: "Would employers prefer to see a graduate from a university that encouraged students to use AI tools, or a university that banned the use of AI tools? What reasons do you have?" },
+  { id: 8, title: "CS Evolution", text: "How might AI impact what is taught in the computer science curriculum?" },
+  { id: 9, title: "Assessment of AI Use", text: "If students are encouraged to use AI as part of their learning, should they be marked on how well they use AI? If so, what criteria and assessment methods should be used for this?" },
 ];
 
 export const DISCUSSION_STEPS = [
