@@ -67,6 +67,16 @@ export default function TutorDashboard() {
       </header>
 
       <main className="mx-auto max-w-3xl px-4 py-8 sm:px-8 space-y-8">
+        {/* Student access */}
+        <div className="rounded-lg border border-border bg-card p-5 flex flex-col sm:flex-row items-center gap-5">
+          <QRCodeSVG value={studentUrl} size={120} className="shrink-0" />
+          <div className="space-y-1 text-center sm:text-left">
+            <p className="text-sm font-semibold text-foreground">Student Access Link</p>
+            <p className="text-xs text-muted-foreground">Share this URL or display the QR code for students to join:</p>
+            <code className="block text-sm bg-muted px-3 py-1.5 rounded-md text-foreground break-all select-all">{studentUrl}</code>
+          </div>
+        </div>
+
         {/* Table count */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-foreground">Total Tables in Room</label>
