@@ -17,10 +17,10 @@ export const QUESTIONS: CurriculumQuestion[] = [
 ];
 
 export const DISCUSSION_STEPS = [
-  "Individual Reflection",
-  "Group Share",
-  "Find the Tension",
-  "Agree on Justification",
+  { title: "Individual Reflection", description: "Take 2 minutes to silently consider the question. Write down your initial thoughts before sharing with anyone." },
+  { title: "Group Share", description: "Go around the table — each person shares their position in 60 seconds. Listen without interrupting." },
+  { title: "Find the Tension", description: "Identify where you disagree. What assumptions differ? What evidence supports each side?" },
+  { title: "Agree on Justification", description: "You don't need to agree on the answer — agree on the strongest reasoning. Prepare to present your table's best argument." },
 ];
 
 // Simple pub/sub to simulate push from tutor to student
