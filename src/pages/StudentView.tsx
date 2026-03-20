@@ -1,25 +1,71 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { QUESTIONS, DISCUSSION_STEPS, subscribeToAssignments } from "@/lib/curriculum-store";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ChevronDown } from "lucide-react";
+import { ArrowLeft, ChevronDown, AlertTriangle } from "lucide-react";
 
 export default function StudentView() {
   const [tableNumber, setTableNumber] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
   const [activeStep, setActiveStep] = useState<number | null>(null);
   const [assignments, setAssignments] = useState<Record<number, number>>({});
+  const [error, setError] = useState<string | null>(null);
+  const [connectionError, setConnectionError] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = subscribeToAssignments(setAssignments);
-    return unsubscribe;
+    let timeout: ReturnType<typeof setTimeout>;
+    try {
+      const unsubscribe = subscribeToAssignments((data) => {
+        setAssignments(data);
+        setConnectionError(false);
+      });
+      // If no data after 15s, show connection warning
+      timeout = setTimeout(() => {
+        setConnectionError(true);
+      }, 15000);
+      return () => {
+        unsubscribe();
+        clearTimeout(timeout);
+      };
+    } catch {
+      setConnectionError(true);
+      return () => clearTimeout(timeout);
+    }
   }, []);
+
+  // Clear connection error once we get data
+  useEffect(() => {
+    if (Object.keys(assignments).length > 0) {
+      setConnectionError(false);
+    }
+  }, [assignments]);
+
+  const handleConnect = () => {
+    const num = Number(inputValue);
+    if (!Number.isInteger(num) || num < 1) {
+      setError("Please enter a valid table number (1 or above).");
+      return;
+    }
+    // Check if table exists in current assignments
+    const hasAssignments = Object.keys(assignments).length > 0;
+    if (hasAssignments && !assignments[num]) {
+      const maxTable = Math.max(...Object.keys(assignments).map(Number));
+      setError(`Table ${num} doesn't exist. Tables 1–${maxTable} are available.`);
+      return;
+    }
+    setError(null);
+    setTableNumber(num);
+  };
 
   const questionId = tableNumber ? assignments[tableNumber] : undefined;
   const question = questionId ? QUESTIONS.find((q) => q.id === questionId) : undefined;
 
-  if (tableNumber === null) {
+  // If tutor changed table count and this table no longer exists
+  const tableRemoved = tableNumber !== null && Object.keys(assignments).length > 0 && !assignments[tableNumber];
+
+  if (tableNumber === null || tableRemoved) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-4">
         <div className="w-full max-w-sm space-y-6 text-center">
@@ -27,20 +73,52 @@ export default function StudentView() {
             <h1 className="text-2xl font-bold tracking-tight text-foreground">Curriculum Lab</h1>
             <p className="text-muted-foreground mt-1 text-sm">Enter your table number to begin</p>
           </div>
+
+          {tableRemoved && (
+            <Alert variant="destructive">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>
+                Table {tableNumber} is no longer active. Please select a different table.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {connectionError && Object.keys(assignments).length === 0 && (
+            <Alert>
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>
+                Waiting for tutor to start the session. You can still enter your table number.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {error && (
+            <Alert variant="destructive">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
           <div className="space-y-3">
             <Input
               type="number"
               min={1}
               placeholder="Table Number"
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={(e) => {
+                setInputValue(e.target.value);
+                setError(null);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleConnect();
+              }}
               className="text-center text-lg"
               autoFocus
             />
             <Button
               className="w-full"
               disabled={!inputValue || Number(inputValue) < 1}
-              onClick={() => setTableNumber(Number(inputValue))}
+              onClick={handleConnect}
             >
               Connect
             </Button>
@@ -61,7 +139,11 @@ export default function StudentView() {
           Table <span className="font-bold text-foreground">{tableNumber}</span>
         </span>
         <button
-          onClick={() => setTableNumber(null)}
+          onClick={() => {
+            setTableNumber(null);
+            setInputValue("");
+            setError(null);
+          }}
           className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           Change table
