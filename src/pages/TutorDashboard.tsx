@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 
 export default function TutorDashboard() {
+  const studentUrl = `${window.location.origin}/student`;
   const [tableCount, setTableCount] = useState(6);
   const [assignments, setLocal] = useState<Record<number, number>>({});
 
