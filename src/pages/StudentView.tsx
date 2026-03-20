@@ -71,6 +71,7 @@ export default function StudentView() {
       <div className="min-h-screen bg-background flex items-center justify-center px-4">
         <div className="w-full max-w-sm space-y-6 text-center">
           <div>
+            <img src={auLogo} alt="Adelaide University" className="h-8 mx-auto mb-3" />
             <h1 className="text-2xl font-bold tracking-tight text-foreground">Curriculum Lab</h1>
             <p className="text-muted-foreground mt-1 text-sm">Enter your table number to begin</p>
           </div>
