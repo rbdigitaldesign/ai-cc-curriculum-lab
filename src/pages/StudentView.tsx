@@ -7,6 +7,21 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, ChevronDown, AlertTriangle } from "lucide-react";
 import auLogo from "@/assets/au-logo-horizontal.png";
 
+import bgQ1 from "@/assets/bg-q1.jpg";
+import bgQ2 from "@/assets/bg-q2.jpg";
+import bgQ3 from "@/assets/bg-q3.jpg";
+import bgQ4 from "@/assets/bg-q4.jpg";
+import bgQ5 from "@/assets/bg-q5.jpg";
+import bgQ6 from "@/assets/bg-q6.jpg";
+import bgQ7 from "@/assets/bg-q7.jpg";
+import bgQ8 from "@/assets/bg-q8.jpg";
+import bgQ9 from "@/assets/bg-q9.jpg";
+
+const QUESTION_BACKGROUNDS: Record<number, string> = {
+  1: bgQ1, 2: bgQ2, 3: bgQ3, 4: bgQ4, 5: bgQ5,
+  6: bgQ6, 7: bgQ7, 8: bgQ8, 9: bgQ9,
+};
+
 export default function StudentView() {
   const [tableNumber, setTableNumber] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -153,22 +168,30 @@ export default function StudentView() {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 flex items-center justify-center px-6 py-10">
-        {question ? (
-          <div className="max-w-2xl text-center space-y-6">
-            <span className="inline-block rounded-md bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground">
-              {question.title}
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight text-foreground">
-              {question.text}
-            </h2>
-          </div>
-        ) : (
-          <div className="text-center space-y-2">
-            <div className="h-8 w-8 mx-auto rounded-full border-2 border-primary border-t-transparent animate-spin" />
-            <p className="text-muted-foreground text-sm">Waiting for your tutor to push a question…</p>
-          </div>
+      <main className="flex-1 flex items-center justify-center px-6 py-10 relative overflow-hidden">
+        {question && QUESTION_BACKGROUNDS[question.id] && (
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none"
+            style={{ backgroundImage: `url(${QUESTION_BACKGROUNDS[question.id]})` }}
+          />
         )}
+        <div className="relative z-10">
+          {question ? (
+            <div className="max-w-2xl text-center space-y-6">
+              <span className="inline-block rounded-md bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground">
+                {question.title}
+              </span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight text-foreground">
+                {question.text}
+              </h2>
+            </div>
+          ) : (
+            <div className="text-center space-y-2">
+              <div className="h-8 w-8 mx-auto rounded-full border-2 border-primary border-t-transparent animate-spin" />
+              <p className="text-muted-foreground text-sm">Waiting for your tutor to push a question…</p>
+            </div>
+          )}
+        </div>
       </main>
 
       {/* Discussion Framework footer */}
