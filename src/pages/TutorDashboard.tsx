@@ -3,14 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { QUESTIONS, pushAssignments } from "@/lib/curriculum-store";
-import { Shuffle, Send, Copy, ExternalLink, Download, LogOut } from "lucide-react";
+import { Shuffle, Send, Copy, ExternalLink, Download } from "lucide-react";
 import { toast } from "sonner";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
-import { supabase } from "@/integrations/supabase/client";
 
 export default function TutorDashboard() {
-  const navigate = useNavigate();
   const studentUrl = `${window.location.origin}/student`;
   const [tableCount, setTableCount] = useState(6);
   const [assignments, setLocal] = useState<Record<number, number>>({});
@@ -70,21 +68,9 @@ export default function TutorDashboard() {
             </h1>
             <p className="text-sm text-muted-foreground mt-0.5">Tutor Dashboard</p>
           </div>
-          <div className="flex items-center gap-2">
-            <Link to="/student">
-              <Button variant="outline" size="sm">Student View →</Button>
-            </Link>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={async () => {
-                await supabase.auth.signOut();
-                navigate("/login");
-              }}
-            >
-              <LogOut className="mr-1.5 h-3.5 w-3.5" /> Sign Out
-            </Button>
-          </div>
+          <Link to="/student">
+            <Button variant="outline" size="sm">Student View →</Button>
+          </Link>
         </div>
       </header>
 
