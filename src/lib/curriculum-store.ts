@@ -28,13 +28,15 @@ type Listener = () => void;
 const listeners: Set<Listener> = new Set();
 
 let tableAssignments: Record<number, number> = {}; // tableNumber -> questionId
+let snapshot = tableAssignments;
 
 export function getAssignments() {
-  return { ...tableAssignments };
+  return snapshot;
 }
 
 export function setAssignments(assignments: Record<number, number>) {
   tableAssignments = { ...assignments };
+  snapshot = tableAssignments;
   listeners.forEach((l) => l());
 }
 
