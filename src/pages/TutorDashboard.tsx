@@ -139,12 +139,20 @@ export default function TutorDashboard() {
           <label className="text-sm font-medium text-foreground">Total Tables in Room</label>
           <Input
             type="number"
+            inputMode="numeric"
             min={1}
             max={50}
             value={tableCount}
             onChange={(e) => {
-              const v = Math.max(1, Math.min(50, Number(e.target.value) || 1));
-              setTableCount(v);
+              const raw = e.target.value;
+              if (raw === "") {
+                setTableCount(1);
+                return;
+              }
+              const num = parseInt(raw, 10);
+              if (!isNaN(num)) {
+                setTableCount(Math.max(1, Math.min(50, num)));
+              }
             }}
             className="max-w-[160px]"
           />
