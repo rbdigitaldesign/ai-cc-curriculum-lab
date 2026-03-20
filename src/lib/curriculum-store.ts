@@ -28,21 +28,35 @@ export const DISCUSSION_STEPS = [
 const SESSION_ID = "default";
 
 // Push assignments to the database
-export async function pushAssignments(assignments: Record<number, number>) {
-  // Delete existing then upsert
-  const rows = Object.entries(assignments).map(([tableNumber, questionId]) => ({
-    session_id: SESSION_ID,
-    table_number: Number(tableNumber),
-    question_id: questionId,
-  }));
+export async function pushAssignments(assignments: Record<number, number>): Promise<{ success: boolean; error?: string }> {
+  try {
+    const rows = Object.entries(assignments).map(([tableNumber, questionId]) => ({
+      session_id: SESSION_ID,
+      table_number: Number(tableNumber),
+      question_id: questionId,
+    }));
 
-  await supabase
-    .from("table_assignments")
-    .delete()
-    .eq("session_id", SESSION_ID);
+    const { error: deleteError } = await supabase
+      .from("table_assignments")
+      .delete()
+      .eq("session_id", SESSION_ID);
 
-  if (rows.length > 0) {
-    await supabase.from("table_assignments").insert(rows);
+    if (deleteError) {
+      console.error("Delete error:", deleteError);
+      return { success: false, error: "Failed to clear previous assignments." };
+    }
+
+    if (rows.length > 0) {
+      const { error: insertError } = await supabase.from("table_assignments").insert(rows);
+      if (insertError) {
+        console.error("Insert error:", insertError);
+        return { success: false, error: "Failed to push assignments to database." };
+      }
+    }
+    return { success: true };
+  } catch (err) {
+    console.error("Push error:", err);
+    return { success: false, error: "Network error. Please check your connection." };
   }
 }
 

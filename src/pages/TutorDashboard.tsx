@@ -25,7 +25,7 @@ export default function TutorDashboard() {
     setLocal(newAssignments);
   }, [tableCount]);
 
-  const push = () => {
+  const push = async () => {
     const complete = Array.from({ length: tableCount }, (_, i) => i + 1).every(
       (t) => assignments[t]
     );
@@ -33,18 +33,26 @@ export default function TutorDashboard() {
       toast.error("Please assign a question to every table first.");
       return;
     }
-    pushAssignments(assignments);
-    toast.success("Questions pushed to all tables!");
+    const result = await pushAssignments(assignments);
+    if (result.success) {
+      toast.success("Questions pushed to all tables!");
+    } else {
+      toast.error(result.error || "Failed to push questions.");
+    }
   };
 
-  const randomiseAndPush = () => {
+  const randomiseAndPush = async () => {
     const newAssignments: Record<number, number> = {};
     for (let i = 1; i <= tableCount; i++) {
       newAssignments[i] = QUESTIONS[Math.floor(Math.random() * QUESTIONS.length)].id;
     }
     setLocal(newAssignments);
-    pushAssignments(newAssignments);
-    toast.success("Questions randomised and pushed!");
+    const result = await pushAssignments(newAssignments);
+    if (result.success) {
+      toast.success("Questions randomised and pushed!");
+    } else {
+      toast.error(result.error || "Failed to push questions.");
+    }
   };
 
   const tables = Array.from({ length: tableCount }, (_, i) => i + 1);
