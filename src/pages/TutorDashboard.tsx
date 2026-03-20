@@ -10,6 +10,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { supabase } from "@/integrations/supabase/client";
 
 export default function TutorDashboard() {
+  const navigate = useNavigate();
   const studentUrl = `${window.location.origin}/student`;
   const [tableCount, setTableCount] = useState(6);
   const [assignments, setLocal] = useState<Record<number, number>>({});
