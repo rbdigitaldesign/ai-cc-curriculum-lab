@@ -70,9 +70,21 @@ export default function TutorDashboard() {
             </h1>
             <p className="text-sm text-muted-foreground mt-0.5">Tutor Dashboard</p>
           </div>
-          <Link to="/student">
-            <Button variant="outline" size="sm">Student View →</Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link to="/student">
+              <Button variant="outline" size="sm">Student View →</Button>
+            </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={async () => {
+                await supabase.auth.signOut();
+                navigate("/login");
+              }}
+            >
+              <LogOut className="mr-1.5 h-3.5 w-3.5" /> Sign Out
+            </Button>
+          </div>
         </div>
       </header>
 
