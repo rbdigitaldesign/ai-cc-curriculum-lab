@@ -168,22 +168,30 @@ export default function StudentView() {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 flex items-center justify-center px-6 py-10">
-        {question ? (
-          <div className="max-w-2xl text-center space-y-6">
-            <span className="inline-block rounded-md bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground">
-              {question.title}
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight text-foreground">
-              {question.text}
-            </h2>
-          </div>
-        ) : (
-          <div className="text-center space-y-2">
-            <div className="h-8 w-8 mx-auto rounded-full border-2 border-primary border-t-transparent animate-spin" />
-            <p className="text-muted-foreground text-sm">Waiting for your tutor to push a question…</p>
-          </div>
+      <main className="flex-1 flex items-center justify-center px-6 py-10 relative overflow-hidden">
+        {question && QUESTION_BACKGROUNDS[question.id] && (
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none"
+            style={{ backgroundImage: `url(${QUESTION_BACKGROUNDS[question.id]})` }}
+          />
         )}
+        <div className="relative z-10">
+          {question ? (
+            <div className="max-w-2xl text-center space-y-6">
+              <span className="inline-block rounded-md bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground">
+                {question.title}
+              </span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight text-foreground">
+                {question.text}
+              </h2>
+            </div>
+          ) : (
+            <div className="text-center space-y-2">
+              <div className="h-8 w-8 mx-auto rounded-full border-2 border-primary border-t-transparent animate-spin" />
+              <p className="text-muted-foreground text-sm">Waiting for your tutor to push a question…</p>
+            </div>
+          )}
+        </div>
       </main>
 
       {/* Discussion Framework footer */}
